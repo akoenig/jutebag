@@ -109,7 +109,7 @@
             } else if (isValidUrl(url)) {
                 pocket.add(configuration, url, tags, function (err) {
                     if (err) {
-                        console.log("\n " + colors.red + "✖ Outsch. Saving URL was not successful.\n" + colors.reset);
+                        console.log("\n " + colors.red + "✖ Outsch. Saving URL was not successful: \n\n   " + err + "\n" + colors.reset);
 
                         return;
                     }

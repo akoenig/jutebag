@@ -23,39 +23,38 @@
     colors.green = "\u001b[32m";
 
     function assistant () {
-        var data = {},
-        	code;
+        var code;
 
-       	http.createServer(function (req, res) {
-       		if (req.url === "/") {
-       			pocket.getAccessToken(code, function (err, accessToken) {
-       				res.writeHead(200, {'Content-Type': 'text/plain; charset=utf8'});
-       				res.end('✓ Cool! Now you can use the pocket-cli. Have fun!');
+        http.createServer(function (req, res) {
+            if (req.url === "/") {
+                pocket.getAccessToken(code, function (err, accessToken) {
+                    res.writeHead(200, {'Content-Type': 'text/plain; charset=utf8'});
+                    res.end('✓ Cool! Now you can use the pocket-cli. Have fun!');
 
-       				config.save({
-       					accessToken: accessToken
-       				});
+                    config.save({
+                        accessToken: accessToken
+                    });
 
-       				console.log("\n " + colors.green + "✓ Done! Have fun.\n" +  colors.reset);
+                    console.log("\n " + colors.green + "✓ Done! Have fun.\n" +  colors.reset);
 
-       				end();
-       			});
-       		}
-       	}).listen(8090, 'localhost');
+                    end();
+                });
+            }
+        }).listen(8090, 'localhost');
 
-       	pocket.getRequestToken(function (err, result) {
-       		console.log("\n  Please visit the following URL for obtaining an access token. Waiting here until you visited the URL. \n\n  " + result.redirectUrl + " \n");
+        pocket.getRequestToken(function (err, result) {
+            console.log("\n  Please visit the following URL for obtaining an access token. Waiting here until you visited the URL. \n\n  " + result.redirectUrl + " \n");
 
-       		code = result.code;
-       	});
+            code = result.code;
+        });
     }
 
     function isValidUrl (url) {
-    	return /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/.test(url);
+        return (/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/).test(url);
     }
 
     function end () {
-    	process.exit();
+        process.exit();
     }
 
     if (!config.exists()) {
@@ -64,39 +63,39 @@
         assistant();
     }
 
-    cli.version(pkg.version)
+    cli.version(pkg.version);
 
     cli
-    	.command("init")
+        .command("init")
         .description("Configuration assistant")
         .action(function () {
-        	assistant();
+            assistant();
         });
 
     cli
-    	.command("add [url]")
+        .command("add [url]")
         .description("Adds a website into your pocket")
         .action(function (url) {
-        	var configuration = config.load();
+            var configuration = config.load();
 
-        	if (isValidUrl(url)) {
-        		pocket.add(configuration, url, function (err) {
-        			if (err) {
-        				console.log("\n " + colors.red + "✖ Outsch. Saving URL was not successful.\n" + colors.reset);
+            if (isValidUrl(url)) {
+                pocket.add(configuration, url, function (err) {
+                    if (err) {
+                        console.log("\n " + colors.red + "✖ Outsch. Saving URL was not successful.\n" + colors.reset);
 
-        				return;
-        			}
+                        return;
+                    }
 
-        			console.log("\n " + colors.green + "✓ Saved URL.\n" +  colors.reset);
+                    console.log("\n " + colors.green + "✓ Saved URL.\n" +  colors.reset);
 
-        			end();
-        		});
-        	} else {
-        		console.log("\n " + colors.red + "✖ Not a valid URL.\n" + colors.reset);
+                    end();
+                });
+            } else {
+                console.log("\n " + colors.red + "✖ Not a valid URL.\n" + colors.reset);
 
-        		end();
-        	}
-      	});
+                end();
+            }
+          });
 
     cli.parse(process.argv);
 }());

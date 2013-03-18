@@ -30,6 +30,11 @@ Copyright (c) 2013, [André König](http://lochkartenstanzer.de) ([Google+](http
 
 ## Changelog
 
+### v0.1.1 (20130318)
+
+* Functionality for defining tags while adding a website (--tags or -t).
+* Exception handling for connection problems.
+
 ### v0.1.0 (20130318)
 
 * Functionality for adding websites to your reading list.

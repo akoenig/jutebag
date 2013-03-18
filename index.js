@@ -24,50 +24,30 @@
 
     function authentication () {
         var requestToken,
-            server,
-            sockets = [],
             indicator;
 
-        server = http.createServer(function (req, res) {
+        http.createServer(function (req, res) {
             if (req.url === "/") {
                 pocket.getAccessToken(requestToken, function (err, accessToken) {
-                    var i;
-
                     if (err) {
                         console.log("\n " + colors.red + "✖ Outsch. Problem while requesting access token: \n\n   " + err + "\n" + colors.reset);
+                    } else {
+                        res.writeHead(200, {'Content-Type': 'text/plain; charset=utf8'});
+                        res.end("✓ Cool! Now you can use your 'jutebag'. Have fun!");
 
-                        exit(1);
+                        config.save({
+                            accessToken: accessToken
+                        });
+
+                        console.log("\n\n  " + colors.green + "✓ Done! Have fun.\n" +  colors.reset);
+
+                        clearInterval(indicator);
                     }
 
-                    res.writeHead(200, {'Content-Type': 'text/plain; charset=utf8'});
-                    res.exit("✓ Cool! Now you can use your 'jutebag'. Have fun!");
-
-                    config.save({
-                        accessToken: accessToken
-                    });
-
-                    console.log("\n\n  " + colors.green + "✓ Done! Have fun.\n" +  colors.reset);
-
-                    server.close();
-
-                    for (i = 0; i < sockets.length; i++) {
-                        sockets[i].destroy();
-                    }
-
-                    clearInterval(indicator);
-
-                    exit();
+                    exit(+(!!(err)));
                 });
             }
         }).listen(8090, 'localhost');
-
-        server.on('connection', function (socket) {
-            sockets.push(socket);
-            socket.setTimeout(4000);
-            socket.on('close', function () {
-                sockets.splice(sockets.indexOf(socket), 1);
-            });
-        });
 
         pocket.getRequestToken(function (err, result) {
             if (err) {
@@ -120,15 +100,14 @@
                 authentication();
             } else if (isValidUrl(url)) {
                 pocket.add(configuration, url, tags, function (err) {
-                    if (err) {
-                        console.log("\n " + colors.red + "✖ Outsch. Saving URL was not successful: \n\n   " + err + "\n" + colors.reset);
+                    var messages = {
+                        success: "\n " + colors.green + "✓ Saved URL.\n" +  colors.reset,
+                        failure: "\n " + colors.red + "✖ Outsch. Saving URL was not successful: \n\n   " + err + "\n" + colors.reset
+                    };
 
-                        exit(1);
-                    }
+                    console.log(messages[!(err) ? 'success' : 'failure']);
 
-                    console.log("\n " + colors.green + "✓ Saved URL.\n" +  colors.reset);
-
-                    exit();
+                    exit(+(!!err));
                 });
             } else {
                 console.log("\n " + colors.red + "✖ Not a valid URL.\n" + colors.reset);

@@ -23,14 +23,14 @@
     colors.green = "\u001b[32m";
 
     function authentication () {
-        var code,
+        var requestToken,
             server,
             sockets = [],
             indicator;
 
         server = http.createServer(function (req, res) {
             if (req.url === "/") {
-                pocket.getAccessToken(code, function (err, accessToken) {
+                pocket.getAccessToken(requestToken, function (err, accessToken) {
                     var i;
 
                     res.writeHead(200, {'Content-Type': 'text/plain; charset=utf8'});
@@ -72,7 +72,7 @@
                 process.stdout.write(".");
             }, 500);
 
-            code = result.code;
+            requestToken = result.code;
         });
     }
 
@@ -85,6 +85,7 @@
     }
 
     cli.version(pkg.version);
+    cli.option('-t, --tags "<comma-separated tags>"', "Pass tags to the specific command.");
 
     cli
         .command("init")
@@ -97,12 +98,16 @@
         .command("add [url]")
         .description("Adds a website into your pocket")
         .action(function (url) {
-            var configuration = config.load();
+            var configuration,
+                tags;
+
+            configuration = config.load();
+            tags = cli.tags;
 
             if (!configuration) {
                 authentication();
             } else if (isValidUrl(url)) {
-                pocket.add(configuration, url, function (err) {
+                pocket.add(configuration, url, tags, function (err) {
                     if (err) {
                         console.log("\n " + colors.red + "✖ Outsch. Saving URL was not successful.\n" + colors.reset);
 

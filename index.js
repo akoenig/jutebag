@@ -23,11 +23,15 @@
     colors.green = "\u001b[32m";
 
     function assistant () {
-        var code;
+        var code,
+            server,
+            sockets = [];
 
-        http.createServer(function (req, res) {
+        server = http.createServer(function (req, res) {
             if (req.url === "/") {
                 pocket.getAccessToken(code, function (err, accessToken) {
+                    var i;
+
                     res.writeHead(200, {'Content-Type': 'text/plain; charset=utf8'});
                     res.end('✓ Cool! Now you can use the pocket-cli. Have fun!');
 
@@ -37,10 +41,24 @@
 
                     console.log("\n " + colors.green + "✓ Done! Have fun.\n" +  colors.reset);
 
+                    server.close();
+
+                    for (i = 0; i < sockets.length; i++) {
+                        sockets[i].destroy();
+                    }
+
                     end();
                 });
             }
         }).listen(8090, 'localhost');
+
+        server.on('connection', function (socket) {
+            sockets.push(socket);
+            socket.setTimeout(4000);
+            socket.on('close', function () {
+                sockets.splice(sockets.indexOf(socket), 1);
+            });
+        });
 
         pocket.getRequestToken(function (err, result) {
             console.log("\n  Please visit the following URL for obtaining an access token. Waiting here until you visited the URL. \n\n  " + result.redirectUrl + " \n");
@@ -58,9 +76,7 @@
     }
 
     if (!config.exists()) {
-        console.log("\n " + colors.red + "✖ Configuration file is not available\n" + colors.reset);
-
-        assistant();
+        console.log("\n " + colors.red + "✖ Configuration file is not available. Talking with Pocket. Just a second ...\n" + colors.reset);
     }
 
     cli.version(pkg.version);
@@ -78,7 +94,9 @@
         .action(function (url) {
             var configuration = config.load();
 
-            if (isValidUrl(url)) {
+            if (!configuration) {
+                assistant();
+            } else if (isValidUrl(url)) {
                 pocket.add(configuration, url, function (err) {
                     if (err) {
                         console.log("\n " + colors.red + "✖ Outsch. Saving URL was not successful.\n" + colors.reset);

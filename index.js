@@ -25,7 +25,8 @@
     function authentication () {
         var code,
             server,
-            sockets = [];
+            sockets = [],
+            indicator;
 
         server = http.createServer(function (req, res) {
             if (req.url === "/") {
@@ -39,13 +40,15 @@
                         accessToken: accessToken
                     });
 
-                    console.log("\n " + colors.green + "✓ Done! Have fun.\n" +  colors.reset);
+                    console.log("\n\n  " + colors.green + "✓ Done! Have fun.\n" +  colors.reset);
 
                     server.close();
 
                     for (i = 0; i < sockets.length; i++) {
                         sockets[i].destroy();
                     }
+
+                    clearInterval(indicator);
 
                     end();
                 });
@@ -61,7 +64,13 @@
         });
 
         pocket.getRequestToken(function (err, result) {
-            console.log("\n  In order to interact with the Pocket service you have to visit this URL to obtain an access token. Waiting here until you visited the URL. \n\n  " + result.redirectUrl + " \n");
+            console.log("\n  In order to interact with the Pocket service you have to visit this URL to obtain an access token.\n\n  " + colors.green + result.redirectUrl + colors.reset + " \n");
+
+            process.stdout.write("  Waiting here until you visited the URL ...");
+
+            indicator = setInterval(function () {
+                process.stdout.write(".");
+            }, 500);
 
             code = result.code;
         });
@@ -73,10 +82,6 @@
 
     function end () {
         process.exit();
-    }
-
-    if (!config.exists()) {
-        console.log("\n " + colors.red + "✖ Configuration file is not available. Talking with Pocket. Just a second ...\n" + colors.reset);
     }
 
     cli.version(pkg.version);

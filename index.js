@@ -36,11 +36,11 @@
                     if (err) {
                         console.log("\n " + colors.red + "✖ Outsch. Problem while requesting access token: \n\n   " + err + "\n" + colors.reset);
 
-                        end();
+                        exit(1);
                     }
 
                     res.writeHead(200, {'Content-Type': 'text/plain; charset=utf8'});
-                    res.end("✓ Cool! Now you can use your 'jutebag'. Have fun!");
+                    res.exit("✓ Cool! Now you can use your 'jutebag'. Have fun!");
 
                     config.save({
                         accessToken: accessToken
@@ -56,7 +56,7 @@
 
                     clearInterval(indicator);
 
-                    end();
+                    exit();
                 });
             }
         }).listen(8090, 'localhost');
@@ -73,7 +73,7 @@
             if (err) {
                 console.log("\n " + colors.red + "✖ Outsch. Problem while determining the request token: \n\n   " + err + "\n" + colors.reset);
 
-                end();
+                exit(1);
             }
 
             console.log("\n  In order to interact with the Pocket service you have to visit this URL to obtain an access token.\n\n  " + colors.green + result.redirectUrl + colors.reset + " \n");
@@ -92,8 +92,8 @@
         return (/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/).test(url);
     }
 
-    function end () {
-        process.exit();
+    function exit (code) {
+        process.exit(code || 0);
     }
 
     cli.version(pkg.version);
@@ -123,17 +123,17 @@
                     if (err) {
                         console.log("\n " + colors.red + "✖ Outsch. Saving URL was not successful: \n\n   " + err + "\n" + colors.reset);
 
-                        return;
+                        exit(1);
                     }
 
                     console.log("\n " + colors.green + "✓ Saved URL.\n" +  colors.reset);
 
-                    end();
+                    exit();
                 });
             } else {
                 console.log("\n " + colors.red + "✖ Not a valid URL.\n" + colors.reset);
 
-                end();
+                exit();
             }
           });
 

@@ -33,7 +33,7 @@
                     var i;
 
                     res.writeHead(200, {'Content-Type': 'text/plain; charset=utf8'});
-                    res.end('✓ Cool! Now you can use the pocket-cli. Have fun!');
+                    res.end("✓ Cool! Now you can use your 'jutebag'. Have fun!");
 
                     config.save({
                         accessToken: accessToken
@@ -61,7 +61,7 @@
         });
 
         pocket.getRequestToken(function (err, result) {
-            console.log("\n  Please visit the following URL for obtaining an access token. Waiting here until you visited the URL. \n\n  " + result.redirectUrl + " \n");
+            console.log("\n  In order to interact with the Pocket service you have to visit this URL to obtain an access token. Waiting here until you visited the URL. \n\n  " + result.redirectUrl + " \n");
 
             code = result.code;
         });

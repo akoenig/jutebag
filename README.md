@@ -14,11 +14,17 @@ A command line interface for the incredible [Pocket](http://getpocket.com) a.k.a
 
 The Pocket authentication process. In order to interact with the Pocket service we have to do a handshake first.
 
-**add [url]**
+**add**
 
-    $ jb add http://joyent.com/blog/watch-it-wednesdays-where-node-goes-from-here
+Usage:
 
-Adds the given URL to your reading list (you have to check this URL if you are interested in [Node.js](http://nodejs.org) ;)
+	$ jb add [url] [--tags or -t] "comma, separated, tags"
+
+Example:
+
+    $ jb add http://joyent.com/blog/watch-it-wednesdays-where-node-goes-from-here -t "node.js, future"
+
+Adds the given URL to your reading list (you have to check this URL if you are interested in [Node.js](http://nodejs.org) ;). Please note that defining tags is optional.
 
 ## License
 

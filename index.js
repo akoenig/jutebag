@@ -33,6 +33,12 @@
                 pocket.getAccessToken(requestToken, function (err, accessToken) {
                     var i;
 
+                    if (err) {
+                        console.log("\n " + colors.red + "✖ Outsch. Problem while requesting access token: \n\n   " + err + "\n" + colors.reset);
+
+                        end();
+                    }
+
                     res.writeHead(200, {'Content-Type': 'text/plain; charset=utf8'});
                     res.end("✓ Cool! Now you can use your 'jutebag'. Have fun!");
 
@@ -64,6 +70,12 @@
         });
 
         pocket.getRequestToken(function (err, result) {
+            if (err) {
+                console.log("\n " + colors.red + "✖ Outsch. Problem while determining the request token: \n\n   " + err + "\n" + colors.reset);
+
+                end();
+            }
+
             console.log("\n  In order to interact with the Pocket service you have to visit this URL to obtain an access token.\n\n  " + colors.green + result.redirectUrl + colors.reset + " \n");
 
             process.stdout.write("  Waiting here until you visited the URL ...");

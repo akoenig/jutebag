@@ -1,0 +1,27 @@
+{
+  "name": "pocket-cli",
+  "version": "0.1.0",
+  "description": "A command line interface for Pocket a.k.a. getpocket.com a.k.a. Read It Later",
+  "main": "index.js",
+  "bin": {
+    "pocket": "./bin/pocket"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:akoenig/pocket-cli.git"
+  },
+  "keywords": [
+    "pocket",
+    "cli"
+  ],
+  "author": "André König <andre.koenig@gmail.com> (http://profile.lochkartenstanzer.de)",
+  "license": "MIT",
+  "dependencies": {
+    "coffee-script" : "1.6.x",
+    "commander": "1.1.x",
+    "node-pocket": "0.9.x"
+  }
+}

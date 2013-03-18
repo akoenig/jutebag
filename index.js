@@ -22,7 +22,7 @@
     colors.reset = "\u001b[0m";
     colors.green = "\u001b[32m";
 
-    function assistant () {
+    function authentication () {
         var code,
             server,
             sockets = [];
@@ -85,7 +85,7 @@
         .command("init")
         .description("Configuration assistant")
         .action(function () {
-            assistant();
+            authentication();
         });
 
     cli
@@ -95,7 +95,7 @@
             var configuration = config.load();
 
             if (!configuration) {
-                assistant();
+                authentication();
             } else if (isValidUrl(url)) {
                 pocket.add(configuration, url, function (err) {
                     if (err) {

@@ -72,8 +72,18 @@
         return (/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/).test(url);
     }
 
+    function loadConfiguration(cb) {
+        var configuration = config.load();
+
+        if (!configuration) {
+            authentication();
+        } else {
+            cb(configuration);
+        }
+    }
+
     function exit (code) {
-        process.exit(code || 0);
+        process.exit(code || 0); // Default value 0
     }
 
     cli.version(pkg.version);
@@ -90,31 +100,27 @@
         .command("add [url]")
         .description("Adds a website into your pocket")
         .action(function (url) {
-            var configuration,
-                tags;
+            loadConfiguration(function (configuration) {
+                var tags = cli.tags;
 
-            configuration = config.load();
-            tags = cli.tags;
+                if (isValidUrl(url)) {
+                    pocket.add(configuration, url, tags, function (err) {
+                        var messages = {
+                            success: "\n " + colors.green + "✓ Saved URL.\n" +  colors.reset,
+                            failure: "\n " + colors.red + "✖ Outsch. Saving URL was not successful: \n\n   " + err + "\n" + colors.reset
+                        };
 
-            if (!configuration) {
-                authentication();
-            } else if (isValidUrl(url)) {
-                pocket.add(configuration, url, tags, function (err) {
-                    var messages = {
-                        success: "\n " + colors.green + "✓ Saved URL.\n" +  colors.reset,
-                        failure: "\n " + colors.red + "✖ Outsch. Saving URL was not successful: \n\n   " + err + "\n" + colors.reset
-                    };
+                        console.log(messages[!(err) ? 'success' : 'failure']);
 
-                    console.log(messages[!(err) ? 'success' : 'failure']);
+                        exit(+(!!err));
+                    });
+                } else {
+                    console.log("\n " + colors.red + "✖ Not a valid URL.\n" + colors.reset);
 
-                    exit(+(!!err));
-                });
-            } else {
-                console.log("\n " + colors.red + "✖ Not a valid URL.\n" + colors.reset);
-
-                exit();
-            }
-          });
+                    exit();
+                }
+            });
+        });
 
     cli.parse(process.argv);
 }());

@@ -50,7 +50,7 @@ Copyright (c) 2013, [André König](http://lochkartenstanzer.de) ([Google+](http
 
 ### v0.2.0 (20130320)
 
-* New command "jb unread". Lists all unread items.unread
+* New command "jb unread". Lists all unread items.
 * Filter function for displaying unread items with a specific tag (e.g. jb unread --tags "node.js")
 * New internal command architecture. Sweet!
 

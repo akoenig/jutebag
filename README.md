@@ -26,7 +26,7 @@ Example:
 
 Adds the given URL to your reading list (you have to check this URL if you are interested in [Node.js](http://nodejs.org) ;). Please note that defining tags is optional.
 
-*unread**
+**unread**
 
 Usage:
 

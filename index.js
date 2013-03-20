@@ -14,24 +14,38 @@ var cli = require("commander"),
 ;(function () {
     "use strict";
 
-    var jutebag = require("./lib/jutebag");
+    var jutebag = require("./lib/jutebag"),
+        command;
 
     process.title = pkg.name;
 
     cli.version(pkg.version);
 
-    jutebag.commands.forEach(function (cmd) {
-        cli.command(cmd.pattern)
-           .description(cmd.description)
-           .and(function (cli) {
-                if (cmd.options) {
-                    cmd.options.forEach(function (opt) {
-                        cli.option(opt.pattern, opt.description);
-                    });
-                }
-           })
-           .action(cmd.exec);
-    });
+    // Binding the 'jutebag' commands
+    // to the command line interface.
+    for (command in jutebag.commands) {
+        if (jutebag.commands.hasOwnProperty(command)) {
+            command = jutebag.commands[command];
 
-    cli.parse(process.argv);
+            cli
+               .command(command.pattern)
+               .description(command.description)
+               .and(function (cli) {
+                    if (command.options) {
+                        command.options.forEach(function (option) {
+                            cli.option(option.pattern, option.description);
+                        });
+                    }
+               })
+               .action(command.exec);
+        }
+    }
+
+    // Executing the 'init' command if there is
+    // no configuation available.
+    if (!jutebag.configuration.exists()) {
+        jutebag.commands.init.exec();
+    } else {
+        cli.parse(process.argv);
+    }
 })();

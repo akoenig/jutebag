@@ -22,6 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "coffee-script" : "1.6.x",
+    "colors": "0.6.x",
     "commander": "git+ssh://git@github.com:akoenig/commander.js.git#master",
     "node-pocket": "0.9.x"
   }

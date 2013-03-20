@@ -18,6 +18,8 @@
         pkg    = require("./package.json"),
         pocket = require("./lib/pocket");
 
+    process.title = "jutebag";
+
     colors.red   = "\u001b[31m";
     colors.reset = "\u001b[0m";
     colors.green = "\u001b[32m";
@@ -72,13 +74,17 @@
         return (/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/).test(url);
     }
 
-    function loadConfiguration(cb) {
-        var configuration = config.load();
+    function needs() {
+        return {
+            configuration : function (cb) {
+                var configuration = config.load();
 
-        if (!configuration) {
-            authentication();
-        } else {
-            cb(configuration);
+                if (!configuration) {
+                    authentication();
+                } else {
+                    cb(configuration);
+                }
+            }
         }
     }
 
@@ -100,7 +106,7 @@
         .command("add [url]")
         .description("Adds a website into your pocket")
         .action(function (url) {
-            loadConfiguration(function (configuration) {
+            needs().configuration(function (configuration) {
                 var tags = cli.tags;
 
                 if (isValidUrl(url)) {

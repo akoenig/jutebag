@@ -18,8 +18,6 @@ var cli = require("commander"),
 
     process.title = pkg.name;
 
-    // TODO: Load the configuration
-
     cli.version(pkg.version);
 
     jutebag.commands.forEach(function (cmd) {

@@ -26,6 +26,18 @@ Example:
 
 Adds the given URL to your reading list (you have to check this URL if you are interested in [Node.js](http://nodejs.org) ;). Please note that defining tags is optional.
 
+*unread**
+
+Usage:
+
+    $ jb unread [--tags or -t] "comma, separated, tags"
+
+Example:
+
+    $ jb unread -t "node.js" # Lists all unread items with the tag "node.js"
+
+Lists all your unread items. The "tag parameters" are optional.
+
 ## License
 
 [MIT License](http://www.opensource.org/licenses/mit-license.php)
@@ -35,6 +47,12 @@ Adds the given URL to your reading list (you have to check this URL if you are i
 Copyright (c) 2013, [André König](http://lochkartenstanzer.de) ([Google+](http://profile.lochkartenstanzer.de)) (andre.koenig -[at]- gmail [*dot*] com)
 
 ## Changelog
+
+### v0.2.0 (20130320)
+
+* New command "jb unread". Lists all unread items.unread
+* Filter function for displaying unread items with a specific tag (e.g. jb unread --tags "node.js")
+* New internal command architecture. Sweet!
 
 ### v0.1.1 (20130318)
 

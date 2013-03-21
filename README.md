@@ -73,6 +73,11 @@ Copyright (c) 2013, [André König](http://lochkartenstanzer.de) ([Google+](http
 
 ## Changelog
 
+### v0.3.0 (20130321)
+
+* New command for listing all items from the archive: jb archive
+* New command for listing all items (unread and archived): jb all
+
 ### v0.2.0 (20130320)
 
 * New command "jb unread". Lists all unread items.

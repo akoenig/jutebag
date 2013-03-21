@@ -18,13 +18,38 @@ The Pocket authentication process. In order to interact with the Pocket service 
 
 Usage:
 
-	$ jb add [url] [--tags or -t] "comma, separated, tags"
+    $ jb add [url] [--tags or -t] "comma, separated, tags"
 
 Example:
 
     $ jb add http://joyent.com/blog/watch-it-wednesdays-where-node-goes-from-here -t "node.js, future"
 
 Adds the given URL to your reading list (you have to check this URL if you are interested in [Node.js](http://nodejs.org) ;). Please note that defining tags is optional.
+
+### all
+
+Usage:
+
+    $ jb all [--tags or -t] "comma, separated, tags"
+
+Example:
+
+    $ jb all -t "node.js, future"
+
+This command lists all your items. It does not matter if it is an archived or an unread item. The tag parameter is (as always) optional.
+
+### archive
+
+Usage:
+
+    $ jb archive [--tags or -t] "comma, separated, tags"
+
+Example:
+
+    $ jb archive -t "video"
+
+Lists all your archived items. The tag parameter is (as always) optional.
+
 
 ### unread
 

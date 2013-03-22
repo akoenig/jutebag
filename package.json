@@ -25,6 +25,9 @@
     "colors": "0.6.x",
     "commander": "git://github.com/akoenig/commander.js.git#master",
     "node-pocket": "0.9.x",
+    "node-readability": "0.0.x",
+    "slug": "0.2.x",
+    "to-markdown": "0.0.x",
     "underscore": "1.4.x"
   }
 }

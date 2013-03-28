@@ -18,7 +18,7 @@
     "pocket",
     "cli"
   ],
-  "author": "André König <andre.koenig@gmail.com> (http://profile.lochkartenstanzer.de)",
+  "author": "André König <andre.koenig@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "coffee-script" : "1.6.x",

@@ -69,7 +69,7 @@ Lists all your unread items. The "tag parameters" are optional.
 
 ## Author
 
-Copyright (c) 2013, [André König](http://lochkartenstanzer.de) ([Google+](http://profile.lochkartenstanzer.de)) (andre.koenig -[at]- gmail [*dot*] com)
+Copyright (c) 2013, [André König](http://iam.andrekoenig.info)
 
 ## Changelog
 

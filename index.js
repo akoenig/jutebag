@@ -9,6 +9,7 @@
  */
 
 var cli = require("commander"),
+    underscore = require("underscore"),
     pkg = require("./package.json");
 
 ;(function () {
@@ -44,7 +45,7 @@ var cli = require("commander"),
     // Executing the 'init' command if there is
     // no configuation available.
     if (!jutebag.configuration.exists()) {
-        jutebag.commands.init.exec();
+        underscore.findWhere(jutebag.commands, {pattern: 'init'}).exec();
     } else {
         cli.parse(process.argv);
     }
